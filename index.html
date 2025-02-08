@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <title>Incognito</title>
+  <style>
+    .explore-button, .next-button, .restaurant-option, .confirm-button, .dessert-option, .activity-option, .view-responses-button {
+      background-color: #ff69b4;
+      border-color: #ff69b4;
+      color: white;
+      transition: background-color 0.3s, border-color 0.3s;
+      cursor: pointer;
+    }
+    .explore-button:hover, .next-button:hover, .restaurant-option:hover, .confirm-button:hover, .dessert-option:hover, .activity-option:hover, .view-responses-button:hover {
+      background-color: #ff1493;
+      border-color: #ff1493;
+    }
+    #datepicker, #restaurant, #dessert, #after-activities, #ending-message, #responses-section {
+      display: none;
+    }
+    .active {
+      background-color: #ff1493 !important;
+      border-color: #ff1493 !important;
+    }
+    .restaurant-option, .dessert-option, .activity-option {
+      flex: 0 0 calc(20% - 10px); /* Adjust the width to fit five in a row */
+      padding: 5px;
+      margin: 5px;
+    }
+    .restaurant-option img, .dessert-option img, .activity-option img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+    .toast {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1050;
+    }
+  </style>
+</head>
+<body style="background-color: #F6D2E0; font-family: 'Fredoka One', sans-serif;">
+  <!-- Navigation Bar -->
+  <nav class="navbar navbar-expand-lg navbar-light disable" style="background-color: #0671B7;">
+    <a class="navbar-brand" href="#"></a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#"></a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container mt-5 pt-5 text-center">
+    <h2 style="color: #ca2e62;">Hey Beautiful,</h2>
+    <h5>Thank you for always saying YES to me.</h5>
+    <img src="spidey.gif" alt="Spidey">
+    <div class="mt-5">
+      <button class="btn explore-button" id="explore-button">
+        Explore
+      </button>
+    </div>
+  </div>
+
+  <br><br><br><br><br>
+
+  <div id="datepicker" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">When are you free?</h4>
+    <p>Please pick a date that works for you!</p>
+    <input type="date" class="form-control" id="date-input" style="max-width: 300px; margin: 0 auto;">
+    <button class="btn next-button" id="next-button" style="display: block; margin: 20px auto;">Next</button>
+    <br><br><br><br><br><br>
+  </div>
+
+  <!-- Toast Message -->
+  <div class="toast align-items-center text-white border-0" id="date-toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #ff1493;">
+    <div class="d-flex">
+      <div class="toast-body">
+        Alright, I'll take note of that! 🤍
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <div id="restaurant" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">What Kind of Restaurant Do You Want to Go To?</h4>
+    <div class="d-flex flex-wrap justify-content-center">
+      <div class="restaurant-option" data-restaurant="Japanese">
+        <img src="japanese.jpg" alt="Japanese Restaurant">
+        Japanese
+      </div>
+      <div class="restaurant-option" data-restaurant="Korean">
+        <img src="korean.jpg" alt="Korean Restaurant">
+        Korean
+      </div>
+      <div class="restaurant-option" data-restaurant="Filipino">
+        <img src="filipino.jpeg" alt="Filipino Restaurant">
+        Filipino
+      </div>
+      <div class="restaurant-option" data-restaurant="Vietnamese">
+        <img src="vietnamese.jpg" alt="Vietnamese Restaurant">
+        Vietnamese
+      </div>
+      <div class="restaurant-option" data-restaurant="Chinese">
+        <img src="chinese.jpeg" alt="Chinese Restaurant">
+        Chinese
+      </div>
+    </div>
+    <button class="btn confirm-button mt-4" id="confirm-button">Confirm</button>
+    <br><br><br><br><br><br><br>
+  </div>
+
+  <!-- Confirmation Toast -->
+  <div class="toast align-items-center text-white border-0" id="restaurant-toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #ff1493;">
+    <div class="d-flex">
+      <div class="toast-body">
+        Great choice! I'll make sure to note that. 🤍
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Dessert Choice Section -->
+  <div id="dessert" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">What's Your Dessert of Choice?</h4>
+    <div class="d-flex flex-wrap justify-content-center">
+      <div class="dessert-option" data-dessert="Ice Cream">
+        <img src="icecream.jpg" alt="Ice Cream">
+        Ice Cream
+      </div>
+      <div class="dessert-option" data-dessert="Cheesecake">
+        <img src="cheesecake.jpg" alt="Cheesecake">
+        Cheesecake
+      </div>
+      <div class="dessert-option" data-dessert="Boba">
+        <img src="boba.jpeg" alt="Boba">
+        Boba (without the Boba!)
+      </div>
+      <div class="dessert-option" data-dessert="Surprise Me">
+        <img src="random.gif" alt="Surprise Me">
+        Surprise Me (Random)
+      </div>
+    </div>
+    <button class="btn confirm-button mt-4" id="dessert-confirm-button">Confirm</button>
+    <br><br><br><br><br><br>
+  </div>
+
+  <!-- Dessert Confirmation Toast -->
+  <div class="toast align-items-center text-white border-0" id="dessert-toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #ff1493;">
+    <div class="d-flex">
+      <div class="toast-body">
+        Sweet choice! I'll make sure to note that. 🍰
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Activity Choice Section -->
+  <div id="after-activities" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">What Shall We Do After?</h4>
+    <div class="d-flex flex-wrap justify-content-center">
+      <div class="activity-option" data-activity="Aquarium">
+        <img src="aquarium.jpg" alt="Aquarium">
+        Aquarium
+      </div>
+      <div class="activity-option" data-activity="Cinema">
+        <img src="cinema.jpg" alt="Cinema">
+        Cinema
+      </div>
+      <div class="activity-option" data-activity="Exhibition">
+        <img src="exhibition.jpg" alt="Exhibition">
+        Exhibition
+      </div>
+      <div class="activity-option" data-activity="Park">
+        <img src="park.jpg" alt="Park">
+        Park
+      </div>
+      <div class="activity-option" data-activity="Stay In">
+        <img src="stayin.jpg" alt="Stay In">
+        Stay In (at my place)
+      </div>
+    </div>
+    <button class="btn confirm-button mt-4" id="activity-confirm-button">Confirm</button>
+    <br><br><br><br><br><br><br>
+  </div>
+
+  <!-- Activity Confirmation Toast -->
+  <div class="toast align-items-center text-white border-0" id="activity-toast" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #ff1493;">
+    <div class="d-flex">
+      <div class="toast-body">
+        Sounds fun! I'll make sure to note that. 🎉
+      </div>
+      <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+  </div>
+
+  <!-- Ending Message Section -->
+  <div id="ending-message" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">Thank you for being my gorgeous girlfriend. I love you, Miwa Ikeda &lt;3</h4>
+    <img src="ending_sample_image.png" alt="Ending Image" style="border-radius: 8px;">
+    <br><br>
+    <h5 style="color: #0671B7;">Love, Mahal ;)</h5>
+
+    <br><br><br><br>
+    <button class="btn view-responses-button mt-4" id="view-responses-button">View Responses</button>
+    <br><br><br><br><br><br><br>
+  </div>
+
+  <!-- Responses Section -->
+  <div id="responses-section" class="container mt-5 pt-5 text-center">
+    <h4 style="color: #0671B7;">Your Responses</h4> <br>
+    <p><strong>Date:</strong> <span id="response-date"></span></p>
+    <p><strong>Restaurant:</strong> <span id="response-restaurant"></span></p>
+    <p><strong>Dessert:</strong> <span id="response-dessert"></span></p>
+    <p><strong>Activity:</strong> <span id="response-activity"></span></p>
+
+    <br>
+
+    <img src="cute.gif" alt="Thankyou">
+  </div>
+
+  <!-- Audio Player -->
+  <div class="container mt-5">
+    <audio id="bg-audio" loop>
+      <source src="ilysb.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+  </div>
+
+  <!-- Bootstrap JS and Popper.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+  <!-- Custom JS for Autoplay, Volume, Show Datepicker, Show Restaurant, Show Dessert, Show Activity, Show Ending Message, Show Responses, and Toast Message -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var audio = document.getElementById('bg-audio');
+      audio.volume = 0.5;  // Set volume to 50%
+      audio.play();
+
+      var exploreButton = document.getElementById('explore-button');
+      var datepickerDiv = document.getElementById('datepicker');
+      var dateInput = document.getElementById('date-input');
+      var dateToast = new bootstrap.Toast(document.getElementById('date-toast'));
+      var nextButton = document.getElementById('next-button');
+      var restaurantDiv = document.getElementById('restaurant');
+      var restaurantToast = new bootstrap.Toast(document.getElementById('restaurant-toast'));
+      var confirmButton = document.getElementById('confirm-button');
+      var selectedRestaurant = null;
+
+      var dessertDiv = document.getElementById('dessert');
+      var dessertToast = new bootstrap.Toast(document.getElementById('dessert-toast'));
+      var dessertConfirmButton = document.getElementById('dessert-confirm-button');
+      var selectedDessert = null;
+
+      var activityDiv = document.getElementById('after-activities');
+      var activityToast = new bootstrap.Toast(document.getElementById('activity-toast'));
+      var activityConfirmButton = document.getElementById('activity-confirm-button');
+      var selectedActivity = null;
+
+      var endingMessageDiv = document.getElementById('ending-message');
+      var viewResponsesButton = document.getElementById('view-responses-button');
+      var responsesSection = document.getElementById('responses-section');
+      var responseDate = document.getElementById('response-date');
+      var responseRestaurant = document.getElementById('response-restaurant');
+      var responseDessert = document.getElementById('response-dessert');
+      var responseActivity = document.getElementById('response-activity');
+
+      exploreButton.addEventListener('click', function() {
+        datepickerDiv.style.display = 'block';
+        datepickerDiv.scrollIntoView({ behavior: 'smooth' });
+      });
+
+      dateInput.addEventListener('change', function() {
+        dateToast.show();
+        nextButton.style.display = 'block';
+      });
+
+      nextButton.addEventListener('click', function() {
+        if (dateInput.value) {
+          restaurantDiv.style.display = 'block';
+          restaurantDiv.scrollIntoView({ behavior: 'smooth' });
+        } else {
+          alert("Please pick a date first!");
+        }
+      });
+
+      document.querySelectorAll('.restaurant-option').forEach(function(option) {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.restaurant-option').forEach(function(opt) {
+            opt.classList.remove('active');
+          });
+          this.classList.add('active');
+          selectedRestaurant = this.getAttribute('data-restaurant');
+        });
+      });
+
+      confirmButton.addEventListener('click', function() {
+        if (selectedRestaurant) {
+          restaurantToast.show();
+          dessertDiv.style.display = 'block';
+          dessertDiv.scrollIntoView({ behavior: 'smooth' });
+          responseRestaurant.textContent = selectedRestaurant;
+        }
+      });
+
+      document.querySelectorAll('.dessert-option').forEach(function(option) {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.dessert-option').forEach(function(opt) {
+            opt.classList.remove('active');
+          });
+          this.classList.add('active');
+          selectedDessert = this.getAttribute('data-dessert');
+        });
+      });
+
+      dessertConfirmButton.addEventListener('click', function() {
+        if (selectedDessert) {
+          dessertToast.show();
+          activityDiv.style.display = 'block';
+          activityDiv.scrollIntoView({ behavior: 'smooth' });
+          responseDessert.textContent = selectedDessert;
+        }
+      });
+
+      document.querySelectorAll('.activity-option').forEach(function(option) {
+        option.addEventListener('click', function() {
+          document.querySelectorAll('.activity-option').forEach(function(opt) {
+            opt.classList.remove('active');
+          });
+          this.classList.add('active');
+          selectedActivity = this.getAttribute('data-activity');
+        });
+      });
+
+      activityConfirmButton.addEventListener('click', function() {
+        if (selectedActivity) {
+          activityToast.show();
+          endingMessageDiv.style.display = 'block';
+          endingMessageDiv.scrollIntoView({ behavior: 'smooth' });
+          responseActivity.textContent = selectedActivity;
+        }
+      });
+
+      viewResponsesButton.addEventListener('click', function() {
+        responsesSection.style.display = 'block';
+        responsesSection.scrollIntoView({ behavior: 'smooth' });
+        responseDate.textContent = dateInput.value;
+      });
+    });
+  </script>
+</body>
+</html>
